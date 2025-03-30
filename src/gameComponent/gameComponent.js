@@ -51,25 +51,43 @@ const generateGameComponent = function () {
 
     return {
         playRound : function(x, y) {
+            if (turn >= 9) {
+                return 0;
+            }
             if (board[x][y] === " ") {
                 if (turn%2!==0) {
                     board[x][y] = "x";
-                    if (checkWinCollums("x") && checkWinRows("x") && checkWinDiagonal("x")) {
+                    if (checkWinCollums("x") || checkWinRows("x") || checkWinDiagonal("x")) {
                         return "x"
                     }
                 } else {
                     board[x][y] = "o";
-                    if (checkWinCollums("o") && checkWinRows("o") && checkWinDiagonal("o")) {
+                    if (checkWinCollums("o") || checkWinRows("o") || checkWinDiagonal("o")) {
                         return "o"
                     }
                 }
-            } 
-            turn++
-            return undefined
+                turn++
+                return 1;
+            }
+            return -1
+        },
+        getArrayBoard : function() {
+            return board;
         },
         getBoard : function () {
-            let formatBoard = "     |     |      \n  " + board[0][0] + "  |  " + board[0][1] + "  |  " + board[0][2] + "  \n_____|_____|_____\n     |     |      \n  " + board[1][0] + "  |  " + board[1][1] + "  |  " + board[1][2] + "  \n     |     |      \n_____|_____|_____\n     |     |      \n  " + board[2][0] + "  |  " + board[2][1] + "  |  " + board[2][2] + "  \n     |     |      "
-            return formatBoard;
+            return `${board[0][0]} | ${board[0][1]} | ${board[0][2]}\n` +
+            `---------\n` +
+            `${board[1][0]} | ${board[1][1]} | ${board[1][2]}\n` +
+            `---------\n` +
+            `${board[2][0]} | ${board[2][1]} | ${board[2][2]}`;
+        },
+        reset : function () {
+            board = [
+                [" ", " ", " "], 
+                [" ", " ", " "],
+                [" ", " ", " "]
+            ];
+            turn = 1;
         }
     }
 }
